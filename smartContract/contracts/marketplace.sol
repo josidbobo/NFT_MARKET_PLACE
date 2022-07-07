@@ -11,6 +11,7 @@ contract MarketPlace is ReentrancyGuard {
 
     address payable public mainAccount = payable(address(this));
     uint public immutable feePercent;
+    Counters.Counter public itemCount;
 
     modifier noZeroAddress(){
         require(msg.sender != address(0));
