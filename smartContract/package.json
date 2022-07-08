@@ -26,7 +26,7 @@
     "deploy": "npx hardhat run src/backend/scripts/deploy.js --network goerli",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "npx hardhat test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

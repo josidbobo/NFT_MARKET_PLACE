@@ -13,9 +13,9 @@ module.exports = {
     artifacts: "./src/backend/artifacts",
     sources: "./contracts",
     cache: "./src/backend/cache",
-    tests: "./src/backend/test"
+    tests: "./test"
   },
-  defaultNetwork: "goerli",
+  //defaultNetwork: "localhost",
   networks: {
     goerli: {
       url: process.env.ALCHEMY_GOERLI_URL,
