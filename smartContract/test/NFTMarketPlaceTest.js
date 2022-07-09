@@ -45,16 +45,29 @@ describe("NFTMarketPlace", function(){
     describe("Making MarketPlace Items", function () {
         beforeEach(async function () {
             await nft.connect(addr1).safeMint(URI);
-            await nft.connect(addr1).setApprovalForAll(marketPlace.address, true)
+            await nft.connect(addr1).setApprovalForAll(marketPlace.address, true);
+            
         });
 
         it("Should track newly created item, transfer NFT from seller to marketplace and emit item created", async function(){
-             await expect(marketPlace.connect(addr1).create(nft.address, 0, toWei(1))).to.emit(marketPlace, "ItemCreated")
+             await expect(marketPlace.connect(addr1).createItem(nft.address, 0, toWei(1))).to.emit(marketPlace, "ItemCreated")
              .withArgs(1, nft.address, 0, addr1.address, toWei(1));
              expect(await nft.ownerOf(0)).to.equal(marketPlace.address);
             expect(await marketPlace.itemCount()).to.be.equal(1);
-        //     expect(await nft.tokenURI(1)).to.equal(URI);
+
+            // const item = marketPlace.items(1);
+            // expect(await item.itemId).to.equal(1);
+            // expect(await item.nft).to.equal(nft.address);
+            // expect(await item.tokenId).to.equal(0);
+            // expect(await item.price).to.equal(toWei(1));
+            // expect(await item.sold).to.equal(false);
          });
+
+         it("Should fail if price is set to Zero", async function(){
+            //expect(await marketPlace.connect(addr1).createItem(nft.address, 0, 1)).to.not.be.reverted();
+         });
+
+
     });
     
 });

@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract NFT is ERC721URIStorage, Ownable {
+contract NFT is ERC721, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
@@ -28,18 +28,19 @@ contract NFT is ERC721URIStorage, Ownable {
 
     // The following functions are overrides required by Solidity.
 
-    function _burn(uint256 tokenId) internal override(ERC721URIStorage) {
+    function _burn(uint256 tokenId) internal override(ERC721URIStorage, ERC721) {
         super._burn(tokenId);
     }
 
     function tokenURI(uint256 tokenId)
         public
         view
-        override(ERC721URIStorage)
+        override(ERC721URIStorage, ERC721)
         returns (string memory)
     {
         return super.tokenURI(tokenId);
     }
+
 }
 
 
