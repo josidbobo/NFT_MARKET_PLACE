@@ -7,7 +7,8 @@ const fromWei = (num) => ethers.utils.formatEther(num)
 
  
 describe("NFTMarketPlace", function(){
-    let deployer, addr1, addr2, nft, marketPlace
+    let addr1, addr2, nft, marketPlace
+    let deployer = 0x6A13b88A2bC7E8226679DFbb60f47FD9C3D93943
     let feePercent = 10
     let URI = "Sample Uri"
     beforeEach(async function () {
@@ -64,9 +65,39 @@ describe("NFTMarketPlace", function(){
          });
 
          it("Should fail if price is set to Zero", async function(){
-            //expect(await marketPlace.connect(addr1).createItem(nft.address, 0, 1)).to.not.be.reverted();
+            expect(await marketPlace.connect(addr1).createItem(nft.address, 0, 0)).to.be.reverted();
          });
 
+
+    });
+    describe("Purchasing MarketPlace Items", function () {
+        beforeEach(async function () {
+            let price = 2;
+            await nft.connect(addr1).safeMint(URI);
+            await nft.connect(addr1).setApprovalForAll(marketPlace.address, true);
+            await marketPlace.connect(addr1).createItem(nft.address,0, 20);
+        });
+        it("Should update item as sold, pay seller, transfer NFT to buyer, charge fees and emit a bought event", async function(){
+            const seller = await addr1.getBalance();
+            const feeAccountInitialEthBal = await marketPlace.balance;
+            totalPriceInWei = await marketPlace.connect(deployer).priceConvert(marketPlace.getTotalPrice(1));
+
+            await expect(marketPlace.connect(deployer).buyItem(1,{value: totalPriceInWei}))
+            .to.emit(marketPlace, "ItemBought").withArgs(
+                1, nft.address, 0, toWei(price), addr1.address, deployer.address
+            )
+            const sellerFinalEthBal = await addr1.getBalance();
+            const feeAccountFinalEthBal = await marketPlace.balance;
+
+            expect(+fromWei(sellerFinalEthBal)).to.equal(+price + + fromWei(seller))
+
+            const fee = (feePercent / 100) * price
+
+            expect(+fromWei(feeAccountFinalEthBal)).to.equal(+fee + + fromWei(feeAccountInitialEthBal))
+            expect(await nft.ownerOf(0)).to.equal(deployer.address)
+            expect(await marketPlace.items(1).sold).to.equal(true)
+
+        })
 
     });
     

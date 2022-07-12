@@ -1,2 +1,2 @@
 # NFT_MARKET_PLACE
-A recreation of an NFT market place.
+An NFT market place built on ethereum with flutter and solidity

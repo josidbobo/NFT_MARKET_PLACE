@@ -3,9 +3,9 @@ async function main() {
   const [deployer] = await ethers.getSigners();
 
   // NFT contract deploy
-  const NFT = await ethers.getContractFactory("NFT");
-  const nft = await NFT.deploy();
-  await nft.deployed();
+  // const NFT = await ethers.getContractFactory("NFT");
+  // const nft = await NFT.deploy();
+  // await nft.deployed();
 
   // MarketPlace contract deploy
   const MarketPlace = await ethers.getContractFactory("MarketPlace");

@@ -22,6 +22,7 @@ contract MarketPlace is ReentrancyGuard{
         address payable seller;
         bool sold;
     }
+    event received(address indexed operator, address indexed from, uint tokenId, bytes data);
     event ItemCreated(uint itemId, address indexed nft, uint tokenId, address indexed owner, uint price);
     event ItemBought(uint itemId, address indexed nft, uint tokenId, address indexed seller, address indexed buyer);
 
@@ -36,6 +37,10 @@ contract MarketPlace is ReentrancyGuard{
         feePercent = _feePercent;
         priceFeed = AggregatorV3Interface(0x8A753747A1Fa494EC906cE90E9f37563A8AF630e);
     }
+
+    // function setApprovalForAll(address operator, bool approved) public virtual override {
+    //     _setApprovalForAll(_msgSender(), operator, approved);
+    // }
 
     /// @notice Oracle function to get latest price of ETH/USD
     function getLatestPrice() public view returns (int) {
@@ -94,11 +99,14 @@ contract MarketPlace is ReentrancyGuard{
         item.sold = true;
 
         item.nft.transferFrom(address(this), msg.sender, item.tokenId);
-        ItemBought(_itemId, address(item.nft), item.tokenId, item.price, item.seller, msg.sender);
-
+        emit ItemBought(_itemId, address(item.nft), item.tokenId, item.seller, msg.sender);
      }
 
      function getTotalPrice(uint _itemId) public view returns (uint){
         return items[_itemId].price * (100 + feePercent) / 100;
+     }
+
+     function getContractBalance() public view returns (uint) {
+        return address(this).balance;
      }
 }

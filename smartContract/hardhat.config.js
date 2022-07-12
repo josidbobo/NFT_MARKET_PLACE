@@ -17,8 +17,8 @@ module.exports = {
   },
   //defaultNetwork: "localhost",
   networks: {
-    goerli: {
-      url: process.env.ALCHEMY_GOERLI_URL,
+    rinkeby: {
+      url: process.env.RINKEBY_URL,
       accounts: [process.env.PRIVATE_KEY]
     }
   }
