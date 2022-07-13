@@ -26,10 +26,6 @@ contract NFT is ERC721, ERC721URIStorage, Ownable {
         return tokenId;
     }
 
-    function setApprovalForMarketPlace() public virtual  {
-        _setApprovalForAll(_msgSender(), 0x482e066A2E4fCCcFF6D013572Cf04A335428317c, true);
-    }
-
     // The following functions are overrides required by Solidity.
 
     function _burn(uint256 tokenId) internal override(ERC721URIStorage, ERC721) {

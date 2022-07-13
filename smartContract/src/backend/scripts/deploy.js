@@ -2,18 +2,18 @@ async function main() {
 
   const [deployer] = await ethers.getSigners();
 
-  // NFT contract deploy
-  // const NFT = await ethers.getContractFactory("NFT");
-  // const nft = await NFT.deploy();
-  // await nft.deployed();
+  //NFT contract deploy
+  const NFT = await ethers.getContractFactory("NFT");
+  const nft = await NFT.deploy();
+  await nft.deployed();
 
   // MarketPlace contract deploy
   const MarketPlace = await ethers.getContractFactory("MarketPlace");
   const marketPlace = await MarketPlace.deploy(10);
   await marketPlace.deployed();
 
-  //console.log("Deployed contract is:", nft.address);
-  console.log("Deployed contract is:", marketPlace.address);
+  console.log("Deployed nft contract is:", nft.address);
+  console.log("Deployed marketplace contract is:", marketPlace.address);
 
   //console.log("Deploying contracts with the account:", deployer.address);
   //console.log("Account balance:", (await deployer.getBalance()).toString());
